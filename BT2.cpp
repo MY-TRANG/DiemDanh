@@ -26,9 +26,20 @@ public:
         this->phuCap = phuCap;
     }
 
-    int luongThucLinh(){
-        return luongCoBan * heSoLuong + phuCap;
+    double luongThucLinh() const {
+        double baoHiem = 0.105 * (luongCoBan * heSoLuong);
+        return luongCoBan * heSoLuong + phuCap - baoHiem;
     }
+
+    // xếp loại thu nhập
+    void xepLoaiThuNhap() const {
+        double luongTL = luongThucLinh();
+        if (luongTL < 7000000) cout<<"Thap";
+        if (luongTL >= 7000000 && luongTL <= 15000000) cout<< "Trung binh";
+        if (luongTL > 15000000 && luongTL <= 25000000) cout<<"Kha";
+        if (luongTL > 25000000) cout<< "Cao";
+    }
+
     void nhap(){
         cout << "Nhap Ma NV: ";
         cin >> maNV;
@@ -55,5 +66,7 @@ int main()
     NhanVien nv;
     nv.nhap();
     nv.xuat();
+    nv.xepLoaiThuNhap();
+    
     return 0;
 }
