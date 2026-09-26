@@ -1,5 +1,8 @@
 #include <iostream>
 #include <string>
+#include <vector>
+#include <iomanip>
+#include <algorithm>
 using namespace std;
 
 class NhanVien{
@@ -26,19 +29,19 @@ public:
         this->phuCap = phuCap;
     }
 
-    double luongThucLinh() const {
-        double baoHiem = 0.105 * (luongCoBan * heSoLuong);
+    long long luongThucLinh() const {
+        long long baoHiem = 0.105 * (luongCoBan * heSoLuong);
         return luongCoBan * heSoLuong + phuCap - baoHiem;
     }
 
     // xếp loại thu nhập
-    void xepLoaiThuNhap() const {
-        double luongTL = luongThucLinh();
-        if (luongTL < 7000000) cout<<"Thap";
-        if (luongTL >= 7000000 && luongTL <= 15000000) cout<< "Trung binh";
-        if (luongTL > 15000000 && luongTL <= 25000000) cout<<"Kha";
-        if (luongTL > 25000000) cout<< "Cao";
-    }
+    string xepLoaiThuNhap() const {
+    double luong = luongThucLinh();
+    if (luong < 7000000) return "Thap";
+    if (luong <= 15000000) return "Trung binh";
+    if (luong <= 25000000) return "Kha";
+    return "Cao";
+}
 
     void nhap(){
         cout << "Nhap Ma NV: ";
@@ -60,6 +63,46 @@ public:
         cout << "Phu Cap: " << phuCap << endl;
         cout << "Tong Luong: " << luongThucLinh() << endl;
     }
+    
+    //Chồng toán tử nhập (>>)
+    friend istream& operator >>(istream& in, NhanVien& nv) {
+        cout << "Nhap ma NV: ";
+        in >> nv.maNV;
+        in.ignore(); 
+        cout << "Nhap ho ten: ";
+        getline(in, nv.hoTen);
+        cout << "Nhap luong co ban: ";
+        in >> nv.luongCoBan;
+        cout << "Nhap he so luong: ";
+        in >> nv.heSoLuong;
+        cout << "Nhap phu cap: ";
+        in >> nv.phuCap;
+        return in;
+    }
+
+    friend ostream& operator<<(ostream& out, const NhanVien& nv) {
+        out <<"mã nv"<<"\t"<<"họ tên"<<"\t"<<"lương CBan"<<"\t"<<"HSo Lương"<<"\t"<<"phụ cấp"<<"\t"<<"lương tổng"<<"\t"<<"xếp loại"<<"\t\n"
+            << nv.maNV << "\t"
+            << nv.hoTen << "\t"
+            << nv.luongCoBan << "\t"
+            << nv.heSoLuong << "\t"
+            << nv.phuCap << "\t"
+            << nv.luongThucLinh() << "\t"
+            << nv.xepLoaiThuNhap() << "\t";
+        return out;
+    }
+
+    // Chồng toán tử gán 
+    NhanVien& operator=(const NhanVien& nv) {
+        if (this != &nv) {
+            maNV = nv.maNV;
+            hoTen = nv.hoTen;
+            luongCoBan = nv.luongCoBan;
+            heSoLuong = nv.heSoLuong;
+            phuCap = nv.phuCap;
+        }
+        return *this;
+    }
 };
 int main()
 {
@@ -67,6 +110,7 @@ int main()
     nv.nhap();
     nv.xuat();
     nv.xepLoaiThuNhap();
-    
+    cout<<nv;
+    cin>>nv;
     return 0;
 }
