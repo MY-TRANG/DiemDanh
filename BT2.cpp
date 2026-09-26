@@ -1,8 +1,6 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <iomanip>
-#include <algorithm>
 using namespace std;
 
 class NhanVien{
